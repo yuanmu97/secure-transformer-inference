@@ -1,3 +1,7 @@
+"""
+reference: https://github.com/facebookresearch/codellama
+"""
+
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
@@ -97,17 +101,11 @@ def permute_block(blk, p):
                         "attention_layer.w_v.weight",
                         "ff_layer.w1.weight",
                         "ff_layer.w3.weight"]:
-                # print(name, '\n', para.data)
                 para.data = para.data[:, p]
-                # print(para.data)
             if name in ["attention_layer.w_o.weight",
                         "attention_layer.w_o.bias",
                         "ff_layer.w2.weight"]:
-                # print(name, '\n', para.data)
                 para.data = para.data[p]
-                # print(para.data)
-            # if name.startswith("ln"):
-            #     print(name, para.data)
     return p_blk
 
 
@@ -125,14 +123,11 @@ if __name__ == "__main__":
         block = LlamaTransformerBlock(DMODEL, NHEADS, DFF)
         p = np.random.permutation(DMODEL)
 
-        # p = [2, 0, 3, 1]
-
         print(f"Permutation={p}")
         xp = x[:, :, p]
         p_block = permute_block(block, p)
         mask = (1 - torch.triu(torch.ones(1, SEQLEN, SEQLEN), diagonal=1)).bool()
-        
-        # 测试结果一致性
+
         with torch.no_grad():
             print("Encoder Block:")
             y = block(x, None)

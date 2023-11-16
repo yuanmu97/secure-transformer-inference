@@ -24,7 +24,14 @@ Inference phase:
 * $P_2$ compute $f_{\theta'}(x')=y'$ and send $y'$ to $P_3$\;
 * $P_3$ de-transform $y'$ by computing $y'\pi^T$ and get $y\pi\pi^T=y$.
 
-For detailed transformation of model parameters, please refer to [our paper](./arXiv2023_Secure_Transformer_Inference.pdf). 
+For detailed transformation of model parameters, please refer to [our paper](./preprint_Secure_Transformer_Inference.pdf). 
+
+## Test Code
+
+We tested original Transformer ([Vaswani, Ashish, et al. 2017](https://arxiv.org/abs/1706.03762)) and Llama Transformer ([Touvron, Hugo, et al. 2023](https://arxiv.org/abs/2302.13971)) using PyTorch.
+
+The test logic is simple: transform the model and re-transform the inference result, then check the absolute difference (Considering the representation error of floating point numbers, not checking for equality) between it and the original result.
+
 
 ## License
 
